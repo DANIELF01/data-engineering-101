@@ -4,11 +4,11 @@ RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poet
 COPY poetry.lock pyproject.toml /
 RUN $HOME/.poetry/bin/poetry config virtualenvs.create false
 RUN $HOME/.poetry/bin/poetry install
-WORKDIR /app
-COPY web_server .
+COPY web_server /app/web_server
+WORKDIR /app/web_server
 EXPOSE 5000
-CMD ["python", "main.py"]
-
+ENV FLASK_APP="main.py"
+ENTRYPOINT ["flask", "run", "--host", "0.0.0.0"]
 
 
 
