@@ -1,8 +1,8 @@
+heading: Data Pipelines
+sub_heading: What is a data pipeline?
+published: 2021-01-03
+author: Daniel Farrugia
 
-
-# Data Pipelines
-
-## What is a data pipeline? 
 
 In the most basic sense a data pipeline moves data from one storage location to another. A non-trivial example of one
 such pipeline would be a service which continuously replicates a singe table between two relational databases. It is common
@@ -13,8 +13,21 @@ to find this type of pipeline in place when there is a need to isolate analytica
 In general, all non-trivial data pipelines will fulfill the following requirements:
 
  - The transfer of information from one location to another 
- - Data transformation from one structure to another 
  - Run in a periodic and automated manner
+ 
+ Often pipelines will apply some degree of transformation: 
+ 
+ - Manipulation from one data strcuture to another
+ - Coercion of types
+ - Data enrichment such as the addtiion of metadata
+ 
+ 
+ 
+ 
+ 
+ https://hackernews.api-docs.io/v0/overview/introduction
+ 
+Thus 
 
 ### Appendix
  - *production*: The computing environment where operational systems run and from which they are exposed to customers. Due to
