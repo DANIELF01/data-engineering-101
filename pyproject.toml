@@ -8,6 +8,7 @@ authors = ["daniel <daniel.farrugia@propelleraero.com.au>"]
 python = "^3.9.1"
 Flask = "^1.1.2"
 Flask-FlatPages = "^0.7.2"
+requests = "^2.25.1"
 
 [tool.poetry.dev-dependencies]
 
