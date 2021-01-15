@@ -28,7 +28,8 @@ def save(items : t.List[t.Dict]) -> None:
     with open(filename, 'w') as fh:
         for item in items:
             line = json.dumps(item)
-            fh.write(f'{line}\n') # JSON line format is a collection of JSON strings separated by newlines
+            # JSONL format is a collection of JSON strings separated by newlines
+            fh.write(f'{line}\n')
 
 
 
