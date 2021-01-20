@@ -90,11 +90,15 @@ In this sense latency will be a measure of the delay between the created time of
 - **Extraction Time:** How long does the it take to retrieve the data from a specific source? If your data source is an API then extraction time can be a considerable cost largely due to network costs and their relatively inflexibility compared to something like a database.
 - **Processing Time:** Is inflight data transformation required before writing this data out to storage. For example *flattening* a highly nexted JSON response or *pivoting* a tabular data structure can be expensive operations with large data volumes that can contribute significantly to pipeline latency.
 - **Write Time:** How long does it take to output the extracted data source to your chosen storage medium. Writing data from your pipeline's in memory data structure to an abritrary storage medium is simply another data transformation. The magnitude of difference between these two encodings and the efficiency at which the data can be transcoded will can contribute significantly to to this cost.  Much like the other cost categories, network cost can easily dominate this component by an order of magnitude.  For example, outputting JSON data line by line to a local file requires little transformation and zero network. Conversely writing the same JSON data to a *service* via an API will incur a large network penalty and see the data transcoded a number of times before arriving at its final destination.       
-- **Data Velocity:** How fast is the data created? In the case of HackerNews we can see that on a typical Saturday new items are created at a rate of ~66 per 5 minutes (sample size one!) so one could say the velocity of HackerNews is 13 items a minute. If the flowrate of your pipeline does not exceed the velocity i.e our HackernNews pipeline must comfortably move greater then 13 items a minute from point A to point B. If a pipeline cannot meet this requirement then the data available for a consumer will inevitably lag as the latency increases. Thankfully data velocity is rarely constant and a well designed will easily accommodate for this variability and seamlessly recover from sudden bursts.
+- **Data Velocity:** How fast is the data created? In the case of HackerNews we can see that on a typical Saturday new items are created at a rate of ~66 per 5 minutes (sample size one!) so one could say the velocity of HackerNews is 13 items a minute. Thus the flowrate of your pipeline must exceed the velocity of the data source i.e our HackernNews pipeline must comfortably move greater then 13 items a minute from point A to point B. If a pipeline cannot meet this requirement then the data available for a consumer will inevitably lag as the latency increases. Thankfully data velocity is rarely constant and a well designed pipeline will easily accommodate for this variability and seamlessly recover from sudden bursts.
     
-<!-- Comment inserted to render code *outside* the list -->
+    
+### Code Time!
+
     :::python
-    {{ save }}x 
+    {{ full_code }}
+ 
+
 
 ### Appendix
  - *production*: The computing environment where operational systems run and from which they are exposed to customers. Due to
