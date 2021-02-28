@@ -36,22 +36,21 @@ def configure():
     return parser.parse_args()
 
 
-def extract(previous_max_id: int, max_id: int, batch_size: int) -> t.Tuple[t.List[t.Dict], int, int]:
-    print(f'Previous last ID: {previous_max_id}\nCurrent max ID: {max_id}')
+def extract(lower_bound: int, upper_bound: int, batch_size: int) -> t.Tuple[t.List[t.Dict], int, int]:
     items = []
-    if previous_max_id == max_id:
+    if lower_bound == upper_bound:
         print('No new items.')
-        return items, previous_max_id, max_id
-    previous_max_id += 1  # Shift to the the next unextracted row
-    print(f'Beginning extraction from: max_id = {previous_max_id}')
-    for current_id in range(previous_max_id, min(max_id + 1, max_id + batch_size)):
-        print(f'Extracting item {current_id}')
+        return items, lower_bound, upper_bound
+    lower_bound += 1  # Shift to the the next unextracted row
+    print(f'Extracting {lower_bound} -> {upper_bound}')
+    for current_id in range(lower_bound, min(upper_bound + 1, upper_bound + batch_size)):
+        print(f'Extracting {current_id}')
         item = requests.get(HACKERNEWS_ITEM_ENDPOINT + f'{current_id}.json')
         item.raise_for_status()
         if not item.json():
             print(f'Failed to extract {current_id}')
         items.append(item.json())
-    return items, previous_max_id, current_id
+    return items, lower_bound, current_id
 
 
 def save(items: t.List[t.Dict], min_id: int, max_id: int) -> None:
@@ -69,7 +68,8 @@ def save(items: t.List[t.Dict], min_id: int, max_id: int) -> None:
 def main():
     args = configure()
     previous_max_id, max_id = get_pipeline_bounds()
-    data, min_id, max_id = extract(previous_max_id, max_id, args.batch_size)
+    # Args.start will be None if not set.
+    data, min_id, max_id = extract(args.start or previous_max_id, max_id, args.batch_size)
     save(data, min_id, max_id)
 
 
