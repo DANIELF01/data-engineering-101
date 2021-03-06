@@ -10,6 +10,8 @@ HACKERNEWS_MAX_ITEM_ENDPOINT = 'https://hacker-news.firebaseio.com/v0/maxitem.js
 DATA_DIR = 'data'
 
 
+
+
 def get_hackernews_maxitem() -> int:
     max_item = requests.get(HACKERNEWS_MAX_ITEM_ENDPOINT)
     max_item.raise_for_status()
@@ -31,8 +33,9 @@ def get_pipeline_bounds() -> t.Tuple[int, int]:
         # to the file created by the last execution of the pipeline.
         #
         # Likewise by including the ID bounds in the file name we now have a very effective means
-        # of finding the last ID.   
-        pipeline_max = int(batches[-1].split('_')[2])
+        # of finding the last ID.
+        most_recent_extraction = batches[-1]
+        pipeline_max = int(most_recent_extraction.split('_')[-1].split('.')[0])
         # Thus for this execution the pipeline should extract the all the items after the
         # previous max until the current HackerNews max. 
         return pipeline_max, live_hn_max
