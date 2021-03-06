@@ -57,7 +57,7 @@ def extract(lower_bound: int, upper_bound: int, batch_size: int) -> t.Tuple[t.Li
         return items, lower_bound, upper_bound
     lower_bound += 1  # Shift to the the next unextracted row
     print(f'Extracting {lower_bound} -> {upper_bound}')
-    for current_id in range(lower_bound, min(upper_bound + 1, upper_bound + batch_size)):
+    for current_id in range(lower_bound, min(upper_bound + 1, lower_bound + batch_size)):
         print(f'Extracting {current_id}')
         item = requests.get(HACKERNEWS_ITEM_ENDPOINT + f'{current_id}.json')
         item.raise_for_status()
