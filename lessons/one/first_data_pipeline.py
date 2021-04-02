@@ -55,11 +55,27 @@ def get_pipeline_bounds() -> t.Tuple[int, int]:
 
 def extract(lower_bound: int, upper_bound: int, batch_size: int) -> t.Tuple[t.List[t.Dict], int, int]:
     items = []
+    # If the bounds are equal then there is no work to do.
+    # Return a empty list and bounds. THe return is important
+    # as the output file whilst empty will serve as a marker
+    # for the next execution of the pipeline.
     if lower_bound == upper_bound:
         print('No new items.')
         return items, lower_bound, upper_bound
+    # The lower bound is the previous max bound. Thus
+    # the record has already been extracted so the
+    # first record to actually extract is the
+    # lower_bound + 1
     lower_bound += 1  # Shift to the the next unextracted row
     print(f'Extracting {lower_bound} -> {upper_bound}')
+    # For each ID from the lower bound up request the
+    # relevant record and append it to the items list.
+    #
+    # The ensure that the extraction does not continue
+    # unabated with extremely large bounds we tenper
+    # the for loops by taking the minimum of the
+    # original upper bound and the lower bound +
+    # some batch size. 
     for current_id in range(lower_bound, min(upper_bound + 1, lower_bound + batch_size)):
         print(f'Extracting {current_id}')
         item = requests.get(HACKERNEWS_ITEM_ENDPOINT + f'{current_id}.json')
@@ -71,6 +87,9 @@ def extract(lower_bound: int, upper_bound: int, batch_size: int) -> t.Tuple[t.Li
 
 
 def save(items: t.List[t.Dict], min_id: int, max_id: int) -> None:
+    # The pipeline should be as automated as possible.
+    # If the data directory does not exist then create
+    # it.
     if not os.path.exists(DATA_DIR):
         os.makedirs(DATA_DIR)
     ts = datetime.datetime.utcnow().isoformat()
